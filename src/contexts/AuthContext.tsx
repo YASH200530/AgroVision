@@ -1,17 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { apiService } from '../services/api';
+import toast from 'react-hot-toast';
 
 interface User {
   id: string;
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
   preferredLanguage: 'en' | 'hi';
+  isVerified: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (phone: string, password: string) => Promise<{ success: boolean; needsVerification?: boolean }>;
   signup: (name: string, email: string, phone: string, password: string, language: 'en' | 'hi') => Promise<boolean>;
+  verifyPhone: (phone: string, otp: string) => Promise<{ success: boolean; user?: User }>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -31,25 +35,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (phone: string, password: string): Promise<{ success: boolean; needsVerification?: boolean }> => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await apiService.login({ phone, password });
       
-      // For demo purposes, check if user exists in localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const existingUser = users.find((u: any) => u.email === email && u.password === password);
-      
-      if (existingUser) {
-        const { password: _, ...userWithoutPassword } = existingUser;
-        setUser(userWithoutPassword);
-        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-        return true;
+      if (result.success && result.user) {
+        setUser(result.user);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        toast.success('Login successful!');
+        return { success: true };
+      } else if (result.needsVerification) {
+        toast.error(result.message);
+        return { success: false, needsVerification: true };
+      } else {
+        toast.error(result.message);
+        return { success: false };
       }
-      return false;
     } catch (error) {
-      return false;
+      toast.error('Login failed. Please try again.');
+      return { success: false };
     } finally {
       setIsLoading(false);
     }
@@ -58,37 +63,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signup = async (name: string, email: string, phone: string, password: string, language: 'en' | 'hi'): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await apiService.signup({ name, email, phone, password, language });
       
-      const newUser = {
-        id: Date.now().toString(),
-        name,
-        email,
-        phone,
-        password,
-        preferredLanguage: language
-      };
-
-      // Save to localStorage (in a real app, this would be sent to the backend)
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      
-      // Check if user already exists
-      if (users.find((u: any) => u.email === email)) {
+      if (result.success) {
+        toast.success(result.message);
+        return true;
+      } else {
+        toast.error(result.message);
         return false;
       }
-      
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      
-      // Set current user (without password)
-      const { password: _, ...userWithoutPassword } = newUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      
-      return true;
     } catch (error) {
+      toast.error('Signup failed. Please try again.');
       return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyPhone = async (phone: string, otp: string): Promise<{ success: boolean; user?: User }> => {
+    setIsLoading(true);
+    try {
+      const result = await apiService.verifyOTP({ phone, otp });
+      
+      if (result.success && result.user) {
+        setUser(result.user);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        return { success: true, user: result.user };
+      } else {
+        return { success: false };
+      }
+    } catch (error) {
+      return { success: false };
     } finally {
       setIsLoading(false);
     }
@@ -97,10 +102,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    toast.success('Logged out successfully');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, signup, verifyPhone, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

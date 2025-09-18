@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 import Home from './components/Home';
 import SignUp from './components/SignUp';
@@ -27,13 +29,13 @@ function AppContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-agri-gradient bg-field-texture flex items-center justify-center">
+      <div className="min-h-screen bg-agri-gradient dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 bg-field-texture flex items-center justify-center">
         <div className="text-center">
           <div className="relative w-16 h-16 mx-auto mb-4">
-            <span className="absolute inset-0 rounded-full border-4 border-agri-200 border-t-agri-600 animate-spin"></span>
-            <span className="absolute inset-2 rounded-full border-4 border-crop-100 border-t-crop-500 animate-spin [animation-duration:1.2s]"></span>
+            <span className="absolute inset-0 rounded-full border-4 border-agri-200 dark:border-agri-800 border-t-agri-600 dark:border-t-agri-400 animate-spin"></span>
+            <span className="absolute inset-2 rounded-full border-4 border-crop-100 dark:border-crop-800 border-t-crop-500 dark:border-t-crop-400 animate-spin [animation-duration:1.2s]"></span>
           </div>
-          <p className="text-soil-700">Loading...</p>
+          <p className="text-soil-700 dark:text-gray-300">Loading...</p>
         </div>
       </div>
     );
@@ -55,7 +57,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-agri-gradient bg-field-texture">
+    <div className="min-h-screen bg-agri-gradient dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 bg-field-texture">
       <Header
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -65,17 +67,45 @@ function AppContent() {
       <main>
         {renderPage()}
       </main>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: 'var(--toast-bg)',
+            color: 'var(--toast-color)',
+            border: '2px solid var(--toast-border)',
+            borderRadius: '16px',
+            fontSize: '16px',
+            fontWeight: '600',
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#ffffff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#ffffff',
+            },
+          },
+        }}
+      />
     </div>
   );
 }
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

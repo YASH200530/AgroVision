@@ -1,7 +1,8 @@
 import React from 'react';
-import { Menu, X, Globe, LogOut, User } from 'lucide-react';
+import { Menu, X, Globe, LogOut, User, Moon, Sun } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface HeaderProps {
   currentPage: string;
@@ -13,6 +14,7 @@ interface HeaderProps {
 export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, setMobileMenuOpen }: HeaderProps) {
   const { language, setLanguage, t } = useLanguage();
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
 
   const navigation = user ? [
     { name: t('nav.home'), id: 'home' },
@@ -30,7 +32,7 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-md border-b-2 border-agri-100 shadow-sm hover:shadow-md transition-all duration-500">
+    <header className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b-2 border-agri-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-500">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -41,7 +43,7 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
                   <path d="M12 3C9.5 8 9.5 12 12 16C14.5 12 14.5 8 12 3Z" fill="#E09F3E"/>
                 </svg>
               </div>
-              <span className="ml-3 text-2xl font-bold text-gray-900 font-display hover:text-agri-700 transition-colors duration-300">AgroVision</span>
+              <span className="ml-3 text-2xl font-bold text-gray-900 dark:text-white font-display hover:text-agri-700 dark:hover:text-agri-400 transition-colors duration-300">AgroVision</span>
             </div>
           </div>
 
@@ -53,8 +55,8 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
                 onClick={() => setCurrentPage(item.id)}
                 className={`px-4 py-2 text-base font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 ${
                   currentPage === item.id
-                    ? 'text-agri-700 bg-agri-50 border-2 border-agri-200'
-                    : 'text-gray-600 hover:text-agri-700 hover:bg-agri-50/50'
+                    ? 'text-agri-700 dark:text-agri-400 bg-agri-50 dark:bg-agri-900/30 border-2 border-agri-200 dark:border-agri-600'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 hover:bg-agri-50/50 dark:hover:bg-agri-900/20'
                 }`}
               >
                 {item.name}
@@ -63,8 +65,15 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
             
             <div className="flex items-center space-x-4">
               <button
+                onClick={toggleTheme}
+                className="flex items-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 px-3 py-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300 transform hover:scale-105"
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              
+              <button
                 onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-                className="flex items-center space-x-2 text-base font-semibold text-gray-600 hover:text-agri-700 px-3 py-2 rounded-lg hover:bg-agri-50 transition-all duration-300 transform hover:scale-105"
+                className="flex items-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 px-3 py-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300 transform hover:scale-105"
               >
                 <Globe className="w-5 h-5" />
                 <span>{language === 'en' ? 'हिं' : 'EN'}</span>
@@ -72,13 +81,13 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
 
               {user ? (
                 <div className="flex items-center space-x-2">
-                  <div className="flex items-center space-x-2 text-base font-medium text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all duration-300">
+                  <div className="flex items-center space-x-2 text-base font-medium text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
                     <User className="w-5 h-5" />
                     <span>{user.name}</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 text-base font-semibold text-gray-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-red-50 transition-all duration-300 transform hover:scale-105"
+                    className="flex items-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-300 transform hover:scale-105"
                   >
                     <LogOut className="w-5 h-5" />
                     <span>{t('nav.logout')}</span>
@@ -88,7 +97,7 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setCurrentPage('login')}
-                    className="text-base font-semibold text-gray-600 hover:text-agri-700 px-4 py-2 rounded-lg hover:bg-agri-50 transition-all duration-300 transform hover:scale-105"
+                    className="text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 px-4 py-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300 transform hover:scale-105"
                   >
                     {t('nav.login')}
                   </button>
@@ -106,15 +115,22 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-4">
             <button
+              onClick={toggleTheme}
+              className="flex items-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 p-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+            
+            <button
               onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-              className="flex items-center space-x-2 text-base font-semibold text-gray-600 hover:text-agri-700 p-2 rounded-lg hover:bg-agri-50 transition-all duration-300"
+              className="flex items-center space-x-2 text-base font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 p-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300"
             >
               <Globe className="w-5 h-5" />
               <span>{language === 'en' ? 'हिं' : 'EN'}</span>
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-600 hover:text-agri-700 p-2 rounded-lg hover:bg-agri-50 transition-all duration-300 transform hover:scale-110"
+              className="text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 p-2 rounded-lg hover:bg-agri-50 dark:hover:bg-agri-900/20 transition-all duration-300 transform hover:scale-110"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -124,7 +140,7 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t-2 border-gray-100 bg-white/95 backdrop-blur-sm">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t-2 border-gray-100 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
               {navigation.map((item) => (
                 <button
                   key={item.id}
@@ -134,8 +150,8 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
                   }}
                   className={`block w-full text-left px-4 py-3 text-lg font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 ${
                     currentPage === item.id
-                      ? 'text-agri-700 bg-agri-100 border-2 border-agri-200'
-                      : 'text-gray-600 hover:text-agri-700 hover:bg-agri-50'
+                      ? 'text-agri-700 dark:text-agri-400 bg-agri-100 dark:bg-agri-900/30 border-2 border-agri-200 dark:border-agri-600'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 hover:bg-agri-50 dark:hover:bg-agri-900/20'
                   }`}
                 >
                   {item.name}
@@ -143,27 +159,27 @@ export default function Header({ currentPage, setCurrentPage, mobileMenuOpen, se
               ))}
               
               {user ? (
-                <div className="border-t-2 border-gray-100 pt-2">
-                  <div className="flex items-center space-x-2 px-4 py-3 text-base font-medium text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300">
+                <div className="border-t-2 border-gray-100 dark:border-gray-700 pt-2">
+                  <div className="flex items-center space-x-2 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300">
                     <User className="w-5 h-5" />
                     <span>{user.name}</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-2 w-full text-left px-4 py-3 text-lg font-semibold text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    className="flex items-center space-x-2 w-full text-left px-4 py-3 text-lg font-semibold text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-300 transform hover:scale-105"
                   >
                     <LogOut className="w-5 h-5" />
                     <span>{t('nav.logout')}</span>
                   </button>
                 </div>
               ) : (
-                <div className="border-t-2 border-gray-100 pt-2 space-y-2">
+                <div className="border-t-2 border-gray-100 dark:border-gray-700 pt-2 space-y-2">
                   <button
                     onClick={() => {
                       setCurrentPage('login');
                       setMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-3 text-lg font-semibold text-gray-600 hover:text-agri-700 hover:bg-agri-50 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    className="block w-full text-left px-4 py-3 text-lg font-semibold text-gray-600 dark:text-gray-300 hover:text-agri-700 dark:hover:text-agri-400 hover:bg-agri-50 dark:hover:bg-agri-900/20 rounded-lg transition-all duration-300 transform hover:scale-105"
                   >
                     {t('nav.login')}
                   </button>
