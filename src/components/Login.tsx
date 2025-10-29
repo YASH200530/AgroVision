@@ -61,36 +61,36 @@ export default function Login({ setCurrentPage }: LoginProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-agri-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8 hover:py-12 transition-all duration-500">
-      <div className="max-w-lg w-full space-y-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-3xl p-10 border-2 border-gray-200/50 dark:border-gray-700/50 shadow-2xl hover:shadow-3xl hover:border-agri-300 dark:hover:border-agri-600 transform hover:scale-105 transition-all duration-500">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-lg w-full space-y-10 bg-gray-800/90 backdrop-blur-md rounded-3xl p-10 border-2 border-gray-700/50 shadow-2xl">
         <div className="text-center">
           <div className="flex justify-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-agri-500 to-agri-600 rounded-3xl flex items-center justify-center shadow-leaf hover:shadow-2xl transform hover:scale-110 transition-all duration-300">
+            <div className="w-20 h-20 bg-gradient-to-br from-agri-500 to-agri-600 rounded-3xl flex items-center justify-center shadow-lg">
               <Leaf className="w-10 h-10 text-white" />
             </div>
           </div>
-          <h2 className="mt-8 text-4xl md:text-5xl font-bold text-gray-900 dark:text-white font-display tracking-tight hover:text-agri-700 dark:hover:text-agri-400 transition-colors duration-300">
+          <h2 className="mt-8 text-4xl md:text-5xl font-bold text-white font-display tracking-tight">
             {t('auth.login.title')}
           </h2>
-          <p className="mt-4 text-lg text-soil-600 dark:text-gray-300 font-medium hover:text-soil-700 dark:hover:text-gray-200 transition-colors duration-300">
+          <p className="mt-4 text-lg text-gray-300 font-medium">
             {t('auth.login.subtitle')}
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50/80 dark:bg-red-900/20 backdrop-blur-sm border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 px-6 py-4 rounded-2xl text-base font-medium animate-pulse hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors duration-300">
+            <div className="bg-red-900/20 backdrop-blur-sm border-2 border-red-800 text-red-400 px-6 py-4 rounded-2xl text-base font-medium">
               {error}
             </div>
           )}
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="phone" className="block text-lg font-bold text-soil-700 dark:text-gray-300 mb-3 font-display hover:text-agri-700 dark:hover:text-agri-400 transition-colors duration-300">
+              <label htmlFor="phone" className="block text-lg font-bold text-gray-300 mb-3 font-display">
                 {t('auth.phone')}
               </label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-soil-400 dark:text-gray-500" />
+                <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <input
                   id="phone"
                   name="phone"
@@ -98,14 +98,14 @@ export default function Login({ setCurrentPage }: LoginProps) {
                   required
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="appearance-none relative block w-full pl-12 pr-6 py-4 border-2 border-gray-200 dark:border-gray-600 placeholder-soil-400 dark:placeholder-gray-500 text-lg text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-agri-300 focus:border-agri-500 hover:border-agri-400 hover:bg-white dark:hover:bg-gray-700 transition-all duration-300 font-medium bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm shadow-sm hover:shadow-md"
+                  className="appearance-none relative block w-full pl-12 pr-6 py-4 border-2 border-gray-600 placeholder-gray-500 text-lg text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-agri-300 focus:border-agri-500 font-medium bg-gray-700/80 backdrop-blur-sm shadow-sm"
                   placeholder="+91 98765 43210"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-lg font-bold text-soil-700 dark:text-gray-300 mb-3 font-display hover:text-agri-700 dark:hover:text-agri-400 transition-colors duration-300">
+              <label htmlFor="password" className="block text-lg font-bold text-gray-300 mb-3 font-display">
                 {t('auth.password')}
               </label>
               <div className="relative">
@@ -116,18 +116,18 @@ export default function Login({ setCurrentPage }: LoginProps) {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="appearance-none relative block w-full px-6 py-4 pr-14 border-2 border-gray-200 dark:border-gray-600 placeholder-soil-400 dark:placeholder-gray-500 text-lg text-gray-900 dark:text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-agri-300 focus:border-agri-500 hover:border-agri-400 hover:bg-white dark:hover:bg-gray-700 transition-all duration-300 font-medium bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm shadow-sm hover:shadow-md"
+                  className="appearance-none relative block w-full px-6 py-4 pr-14 border-2 border-gray-600 placeholder-gray-500 text-lg text-white rounded-2xl focus:outline-none focus:ring-4 focus:ring-agri-300 focus:border-agri-500 font-medium bg-gray-700/80 backdrop-blur-sm shadow-sm"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-5 flex items-center hover:text-agri-600 hover:scale-110 transition-all duration-300"
+                  className="absolute inset-y-0 right-0 pr-5 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-6 w-6 text-soil-400 dark:text-gray-500" />
+                    <EyeOff className="h-6 w-6 text-gray-500" />
                   ) : (
-                    <Eye className="h-6 w-6 text-soil-400 dark:text-gray-500" />
+                    <Eye className="h-6 w-6 text-gray-500" />
                   )}
                 </button>
               </div>
@@ -138,7 +138,7 @@ export default function Login({ setCurrentPage }: LoginProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-5 px-8 border-2 border-transparent text-xl font-bold rounded-2xl text-white bg-gradient-to-r from-agri-600 to-agri-700 hover:from-agri-700 hover:to-agri-800 focus:outline-none focus:ring-4 focus:ring-agri-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 hover:shadow-2xl font-display shadow-lg"
+              className="group relative w-full flex justify-center py-5 px-8 border-2 border-transparent text-xl font-bold rounded-2xl text-white bg-gradient-to-r from-agri-600 to-agri-700 focus:outline-none focus:ring-4 focus:ring-agri-300 disabled:opacity-50 disabled:cursor-not-allowed font-display shadow-lg"
             >
               {isLoading ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
@@ -152,7 +152,7 @@ export default function Login({ setCurrentPage }: LoginProps) {
             <button
               type="button"
               onClick={() => setCurrentPage('signup')}
-              className="text-lg font-bold text-agri-600 dark:text-agri-400 hover:text-agri-700 dark:hover:text-agri-300 transition-all duration-300 hover:underline decoration-2 underline-offset-4 font-display hover:scale-105 transform"
+              className="text-lg font-bold text-agri-400 font-display"
             >
               {t('auth.signup.link')}
             </button>

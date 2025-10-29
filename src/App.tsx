@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
+import WeatherBar from './components/WeatherBar';
 import Home from './components/Home';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
@@ -29,13 +30,13 @@ function AppContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-agri-gradient dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 bg-field-texture flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="relative w-16 h-16 mx-auto mb-4">
-            <span className="absolute inset-0 rounded-full border-4 border-agri-200 dark:border-agri-800 border-t-agri-600 dark:border-t-agri-400 animate-spin"></span>
-            <span className="absolute inset-2 rounded-full border-4 border-crop-100 dark:border-crop-800 border-t-crop-500 dark:border-t-crop-400 animate-spin [animation-duration:1.2s]"></span>
+            <span className="absolute inset-0 rounded-full border-4 border-agri-800 border-t-agri-400 animate-spin"></span>
+            <span className="absolute inset-2 rounded-full border-4 border-crop-800 border-t-crop-400 animate-spin [animation-duration:1.2s]"></span>
           </div>
-          <p className="text-soil-700 dark:text-gray-300">Loading...</p>
+          <p className="text-gray-300">Loading...</p>
         </div>
       </div>
     );
@@ -57,13 +58,14 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-agri-gradient dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 bg-field-texture">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <Header
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
+      <WeatherBar />
       <main>
         {renderPage()}
       </main>
