@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Header from './components/Header';
 import Home from './components/Home';
@@ -55,7 +56,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-agri-gradient bg-field-texture">
+    <div className="min-h-screen bg-agri-gradient bg-field-texture dark:bg-gray-950 dark:text-gray-100">
       <Header
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -71,11 +72,13 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

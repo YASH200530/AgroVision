@@ -15,3 +15,23 @@ h1, h2, h3, .font-display {
 .bg-field-texture {
   background-image: theme('backgroundImage.field-texture');
 }
+
+/* Disable all hover-driven visual effects globally */
+* {
+  transition: none !important;
+}
+*:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  background-color: inherit !important;
+  border-color: inherit !important;
+}
+
+/* Base dark mode colors for body/html via Tailwind class strategy */
+@layer base {
+  html.dark {
+    color-scheme: dark;
+  }
+}
